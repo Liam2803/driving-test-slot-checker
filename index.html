@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Test Slot Checker</title>
+    <script>
+        async function checkSlots() {
+            const testCenter = document.getElementById("testCenter").value;
+            const dateRange = document.getElementById("dateRange").value;
+            const response = await fetch("/api/next-slot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ test_center: testCenter, date_range: dateRange }),
+            });
+            const data = await response.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Driving Test Slot Checker</h1>
+    <form onsubmit="event.preventDefault(); checkSlots();">
+        <label for="testCenter">Test Center:</label>
+        <input type="text" id="testCenter" required>
+        <br>
+        <label for="dateRange">Date Range:</label>
+        <input type="text" id="dateRange" required>
+        <br>
+        <button type="submit">Check Slots</button>
+    </form>
+    <h2>Results</h2>
+    <pre id="result"></pre>
+</body>
+</html>
